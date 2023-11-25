@@ -1,0 +1,8 @@
+{
+  "name": "nestjs-template",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/seth1604abc/nestjs-template.git",
+  "author": "seth1604abc <seth.ma@smartdesign.com.tw>",
+  "license": "MIT"
+}
