@@ -5,7 +5,11 @@ import { mysqlConfigFactory } from '@src/config/mysql.config'
 
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { ConfigModule, ConfigService } from '@nestjs/config'
-import { UserModule } from './modules/user/user.module';
+import { UserModule } from './modules/user/user.module'
+import { AuthModule } from './modules/auth/auth.module'
+
+import { ValidationPipe } from '@nestjs/common'
+import { APP_PIPE } from '@nestjs/core'
 
 @Module({
     imports: [
@@ -18,8 +22,19 @@ import { UserModule } from './modules/user/user.module';
             useFactory: mysqlConfigFactory,
         }),
         UserModule,
+        AuthModule,
     ],
     controllers: [AppController],
-    providers: [AppService],
+    providers: [
+        AppService,
+        {
+            provide: APP_PIPE,
+            useClass: ValidationPipe,
+            useValue: {
+                transform: true,
+                skipMissingProperties: false,
+            },
+        },
+    ],
 })
 export class AppModule {}
