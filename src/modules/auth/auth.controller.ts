@@ -1,21 +1,17 @@
-import {
-    Controller,
-    Post,
-    Body,
-    ValidationPipe,
-    ConflictException,
-    HttpStatus,
-} from '@nestjs/common'
+import { Controller, Post, Body, ValidationPipe, HttpStatus } from '@nestjs/common'
+import { ApiTags } from '@nestjs/swagger'
+
 import { RegisterDto } from './dto/register.dto'
+import { SigninDto } from './dto/signIn.dto'
 import { AuthService } from './auth.service'
 
+@ApiTags('auth')
 @Controller('auth')
 export class AuthController {
     constructor(private readonly authService: AuthService) {}
 
     @Post('/register')
     async register(@Body(new ValidationPipe()) data: RegisterDto) {
-        console.log(data)
         try {
             const result = await this.authService.register(data)
             return {
@@ -24,16 +20,21 @@ export class AuthController {
                 data: result,
             }
         } catch (err) {
-            if (err instanceof ConflictException) {
-                return {
-                    statusCode: HttpStatus.CONFLICT,
-                    message: '帳號已存在',
-                }
-            }
             throw err
         }
     }
 
-    @Post()
-    async signIn() {}
+    @Post('sign-in')
+    async signIn(@Body(new ValidationPipe()) data: SigninDto) {
+        try {
+            const token = await this.authService.signIn(data)
+            return {
+                statusCode: HttpStatus.OK,
+                message: '登入成功',
+                data: token,
+            }
+        } catch (err) {
+            throw err
+        }
+    }
 }

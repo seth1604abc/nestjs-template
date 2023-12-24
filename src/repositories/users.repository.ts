@@ -10,8 +10,17 @@ export class UsersRepository {
 
     findOneByAccount(account: string) {
         return this.userRepo.findOne({
+            relations: ['companyU'],
             where: {
                 account,
+            },
+        })
+    }
+
+    findOneById(id: number) {
+        return this.userRepo.findOne({
+            where: {
+                id,
             },
         })
     }
@@ -21,6 +30,7 @@ export class UsersRepository {
             name: data.name,
             account: data.account,
             password: data.password,
+            companyId: data.companyId,
         })
 
         return this.userRepo.save(createEntity)

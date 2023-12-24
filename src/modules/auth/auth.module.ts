@@ -5,13 +5,18 @@ import { AuthService } from './auth.service'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { AuthController } from './auth.controller'
+
 import { User } from '@src/entities/User.entity'
+import { Company } from '@src/entities/Company.entity'
 
 import { UsersRepository } from '@src/repositories/users.repository'
+import { CompanyRepository } from '@src/repositories/company.repository'
+
+import { JwtStrategy } from '@src/modules/auth/jwt.strategy'
 
 @Module({
     imports: [
-        TypeOrmModule.forFeature([User]),
+        TypeOrmModule.forFeature([User, Company]),
         PassportModule,
         ConfigModule,
         JwtModule.registerAsync({
@@ -23,7 +28,7 @@ import { UsersRepository } from '@src/repositories/users.repository'
             inject: [ConfigService],
         }),
     ],
-    providers: [AuthService, UsersRepository],
+    providers: [AuthService, UsersRepository, CompanyRepository, JwtStrategy],
     controllers: [AuthController],
 })
 export class AuthModule {}
