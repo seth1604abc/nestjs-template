@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+    nestjs-app:
+        build:
+            context: .
+            dockerfile: Dockerfile
+        ports:
+            - '3000:3000'
+        depends_on:
+            - mysql-db
+        environment:
+            DB_HOST: mysql-db
+            DB_PORT: 3306
+            DB_USERNAME: root
+            DB_PASSWORD: 123456
+            DB_DATABASE: nestjs
+            JWT_SECRET: a0e4c047-296c-4e18-aa58-6e0d43a98322
+            HASH_SALT_ROUNDS: 10
+
+    mysql-db:
+        image: mysql:8.3.0
+        ports:
+            - '3307:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: 123456
+            MYSQL_DATABASE: nestjs

@@ -73,8 +73,6 @@ export class AuthService {
             throw new UnauthorizedException('Password error')
         }
 
-        console.log(user)
-
         const token = this.generateJwtoken({
             userName: user.name,
             userUid: user.id,
